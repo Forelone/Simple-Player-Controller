@@ -1,0 +1,10 @@
+Library/*
+Library/Artifacts/*
+ProjectSettings/*
+UserSettings/*
+Logs/*
+Temp/*
+Packages/manifest.json
+Packages/packages-lock.json
+.vscode/*.json
+Assembly-CSharp.csproj
