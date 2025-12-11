@@ -1,18 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(PlayerInput))]
 public class PlayerMovement : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] float KMH = 1, AccelerationMul;
+    [SerializeField] PlayerInput PInput;
+    [SerializeField] Rigidbody RG;
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        
+        Vector3 PMove = PInput.DesiredMovement;
+
+        Vector3 O = Vector3.Lerp(RG.velocity, PMove * KMH, Time.fixedDeltaTime * AccelerationMul);
+        RG.velocity = O;
     }
 }
