@@ -14,13 +14,22 @@ public class PlayerHands : MonoBehaviour
     [SerializeField] PlayerInput PInput;
 
     int RStatus; //0 is idle, 1 is picking up, 2 is holding
+    bool DidHit; RaycastHit hit;
+    public bool IsEquipped { get { return Equipped != null; }}
+    public bool HeadRayDidHit { get { return DidHit; } }
+    public int RStat { get { return RStatus; } }
+    public RaycastHit HeadRayHit { get { return hit; } }
+    public float TLeft { get { return TimeLeft; } }
+    float TimeLeft = 1f;
 
     void FixedUpdate()
     {
-        RaycastHit hit = new RaycastHit(); Useable HitUse = null; Item HitItem = null;
-        bool DidHit = Physics.Raycast(Head.position, Head.forward, out hit, 2f);
+             hit = new RaycastHit(); Useable HitUse = null; Item HitItem = null;
+             DidHit = Physics.Raycast(Head.position, Head.forward, out hit, 2f);
         bool HitUseable = DidHit && hit.transform.TryGetComponent(out HitUse);
         bool HitAItem = DidHit && hit.transform.TryGetComponent(out HitItem);
+
+        Quaternion RDesired = Quaternion.Euler(transform.eulerAngles + new Vector3(90,0,0));
 
         if (Equipped != null)
         {
@@ -33,6 +42,12 @@ public class PlayerHands : MonoBehaviour
         switch (RStatus)
         {
             default: //Not equipped with a item
+                if (DidHit)
+                {
+                    var Dir = (hit.transform.position - LeftArm.position);
+                    RDesired = Quaternion.LookRotation(Dir);
+                }
+
                 if (PInput.PrimaryHandUse)
                 {
                     if (HitAItem)
@@ -43,15 +58,29 @@ public class PlayerHands : MonoBehaviour
                 else if (PInput.SecondaryHandUse)
                 {
                     if (HitAItem && HitUseable) HitUse.Use_();
+                    else if (HitUseable) HitUse.Use_Alternative();
                 }
-            break;
+                break;
+
+            case 1: //Equipping a item
+                if (DidHit)
+                {
+                    var Dir = hit.transform.position - LeftArm.position;
+                    RDesired = Quaternion.LookRotation(Dir);
+                }
+                break;
 
             case 2: //Equipped with a item
                 if (!HitUseable && PInput.InteractiveUse) StartCoroutine(DropHandle());
                 if (PInput.PrimaryHandUse) Equipped.PrimaryUse();
                 if (PInput.SecondaryHandUse) Equipped.SecondaryUse();
-            break;
+
+                RDesired = Head.rotation;
+                break;
         }
+
+
+        RightArm.rotation = Quaternion.Lerp(RightArm.rotation, RDesired, 0.1f);
     }
 
     IEnumerator DropHandle()
@@ -73,18 +102,18 @@ public class PlayerHands : MonoBehaviour
     IEnumerator PickupHandle(Item I)
     {
         RStatus = 1;
-        float TimePassed = 0, RequiredTime = I.PickupDelay;
-        while (PInput.PrimaryHandUse && TimePassed < RequiredTime)
+        TimeLeft = 0; float RequiredTime = I.PickupDelay;
+        while (PInput.PrimaryHandUse && TimeLeft < RequiredTime)
         {
-            TimePassed += Time.deltaTime;
-            if (TimePassed >= RequiredTime)
+            TimeLeft += Time.deltaTime;
+            if (TimeLeft >= RequiredTime)
             {
                 Equipped = I;
-                RStatus = 2;
+                break;
             }
             yield return new WaitForEndOfFrame();
         }
-
-        if (Equipped == null) RStatus = 0;
+        while (PInput.PrimaryHandUse) yield return new WaitForFixedUpdate();
+        RStatus = Equipped == null ? 0 : 2;
     }
 }

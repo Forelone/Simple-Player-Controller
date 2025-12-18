@@ -7,8 +7,12 @@ public class Useable : MonoBehaviour
     [SerializeField] UnityEvent Use;
     [SerializeField] UnityEvent AlternateUse;
     [SerializeField] float RequiredUseDelay = 0, RequiredAlternativeUseDelay = 0, DelayAfterUse = 0, AlternativeDelayAfterUse = 0;
+    float UseFloat, MaxUseFloat;
     bool CanUse = true, CanAlternateUse = true, IsTrying, IsAlternativeTrying;
     bool UseFrameCheck = false, UseAltFrameCheck = false;
+
+    public float V { get { return UseFloat; } }
+    public float MV { get { return MaxUseFloat; } }
 
     [SerializeField]
     bool Debug = true;
@@ -53,14 +57,14 @@ public class Useable : MonoBehaviour
 
     IEnumerator Use_AlternativeDelayHandle()
     {
-        float TimePassed = 0f, RequiredTime = AlternativeDelayAfterUse;
+        UseFloat = 0f; MaxUseFloat = AlternativeDelayAfterUse;
 
         CanAlternateUse = false;
-        while (TimePassed < RequiredTime)
+        while (UseFloat < MaxUseFloat)
         {
             if (Debug)
-            print("Alternative Delay:" + TimePassed + "/" + RequiredTime);
-            TimePassed += 0.01f;
+            print("Alternative Delay:" + UseFloat + "/" + MaxUseFloat);
+            UseFloat += 0.01f;
             yield return new WaitForSeconds(0.01f);
         }
         CanAlternateUse = true;
@@ -68,14 +72,14 @@ public class Useable : MonoBehaviour
 
     IEnumerator Use_DelayHandle()
     {
-        float TimePassed = 0f, RequiredTime = DelayAfterUse;
+        UseFloat = 0f; MaxUseFloat = DelayAfterUse;
 
         CanUse = false;
-        while (TimePassed < RequiredTime)
+        while (UseFloat < MaxUseFloat)
         {
             if (Debug)
-            print("Primary Delay:" + TimePassed + "/" + RequiredTime);
-            TimePassed += 0.01f;
+            print("Primary Delay:" + UseFloat + "/" + MaxUseFloat);
+            UseFloat += 0.01f;
             yield return new WaitForSeconds(0.01f);
         }
         CanUse = true;
@@ -85,22 +89,22 @@ public class Useable : MonoBehaviour
     {
         IsTrying = true;
         UseFrameCheck = true;
-        float Holding = 0, RequiredTime = RequiredUseDelay;
+        UseFloat = 0; MaxUseFloat = RequiredUseDelay;
 
-        while (Holding < RequiredTime)
+        while (UseFloat < MaxUseFloat)
         {
-            if (Debug) print("Primary: " + Holding + "/" + RequiredUseDelay);
-            if (UseFrameCheck) { Holding += Time.fixedDeltaTime; UseFrameCheck = false; }
-            else Holding -= Time.fixedDeltaTime;
+            if (Debug) print("Primary: " + UseFloat + "/" + RequiredUseDelay);
+            if (UseFrameCheck) { UseFloat += Time.fixedDeltaTime; UseFrameCheck = false; }
+            else UseFloat -= Time.fixedDeltaTime;
 
-            if (Holding > RequiredTime)
+            if (UseFloat > MaxUseFloat)
             {
                 if (Debug) print("Use Success");
                 Use.Invoke();
                 if (DelayAfterUse > 0) StartCoroutine(Use_DelayHandle());
                 break;
             }
-            else if (Holding <= 0)
+            else if (UseFloat <= 0)
             {
                 if (Debug) print("Use Fail");
                 break;
@@ -114,22 +118,22 @@ public class Useable : MonoBehaviour
     {
         IsAlternativeTrying = true;
         UseAltFrameCheck = true;
-        float Holding = 0, RequiredTime = RequiredAlternativeUseDelay;
+        UseFloat = 0; MaxUseFloat = RequiredAlternativeUseDelay;
 
-        while (Holding < RequiredTime)
+        while (UseFloat < MaxUseFloat)
         {
-            if (Debug) print("Alternative: " + Holding + "/" + RequiredAlternativeUseDelay);
-            if (UseAltFrameCheck) { Holding += 0.01f; UseAltFrameCheck = false; }
-            else Holding -= 0.01f;
+            if (Debug) print("Alternative: " + UseFloat + "/" + RequiredAlternativeUseDelay);
+            if (UseAltFrameCheck) { UseFloat += 0.01f; UseAltFrameCheck = false; }
+            else UseFloat -= 0.01f;
 
-            if (Holding > RequiredTime)
+            if (UseFloat > MaxUseFloat)
             {
                 if (Debug) print("Alternate Success");
                 AlternateUse.Invoke();
                 if (AlternativeDelayAfterUse > 0) StartCoroutine(Use_AlternativeDelayHandle());
                 break;
             }
-            else if (Holding <= 0)
+            else if (UseFloat <= 0)
             {
                 if (Debug) print("Alternate Fail");
                 break;
