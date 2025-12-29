@@ -15,12 +15,27 @@ public class PlayerHands : MonoBehaviour
 
     int RStatus; //0 is idle, 1 is picking up, 2 is holding
     bool DidHit; RaycastHit hit;
-    public bool IsEquipped { get { return Equipped != null; }}
+    public bool IsEquipped { get { return Equipped != null && RStat != 1; } }
+    
+    public Item EquippedItem { get { return Equipped; } }
+
     public bool HeadRayDidHit { get { return DidHit; } }
     public int RStat { get { return RStatus; } }
     public RaycastHit HeadRayHit { get { return hit; } }
     public float TLeft { get { return TimeLeft; } }
     float TimeLeft = 1f;
+
+    public void HandDrop() //Use only for inventory or storage management etc. 
+    {
+        Equipped = null;
+        RStatus = 0;
+    }
+
+    public void HandEquip(Item Item) //Also, use only for inventory or storage management etc.
+    {
+        Equipped = Item;
+        RStatus = 2;
+    }
 
     void FixedUpdate()
     {

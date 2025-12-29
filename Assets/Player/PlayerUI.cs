@@ -23,7 +23,11 @@ public class PlayerUI : MonoBehaviour
     {
         Text.text = "";
         Vector2 TargetPos = ScreenCenter;
-        if (!PH.IsEquipped && PH.HeadRayDidHit)
+        Transform T = (PH.HeadRayDidHit) ? PH.HeadRayHit.transform : transform;
+        bool IsItem = T.TryGetComponent(out Item I);
+        bool IsUseable = T.TryGetComponent(out Useable U);
+
+        if (!PH.IsEquipped && PH.HeadRayDidHit && IsUseable)
             TargetPos = Eyes.WorldToScreenPoint(PH.HeadRayHit.transform.position);
 
         Crosshair.anchoredPosition = Vector2.Lerp(Crosshair.anchoredPosition, TargetPos, Time.deltaTime * CrosshairSpeed);
@@ -33,7 +37,7 @@ public class PlayerUI : MonoBehaviour
             InteractMeter.maxValue = 1;
             InteractMeter.value = PH.TLeft;
         }
-        else if (PH.HeadRayDidHit && PH.HeadRayHit.transform.TryGetComponent(out Useable U))
+        else if (PH.HeadRayDidHit && IsUseable)
         {
             InteractMeter.maxValue = U.MV;
             InteractMeter.value = U.V;
@@ -46,10 +50,6 @@ public class PlayerUI : MonoBehaviour
 
         if (PH.HeadRayDidHit)
         {
-            Transform T = PH.HeadRayHit.transform;
-            bool IsItem = T.TryGetComponent(out Item I);
-            bool IsUseable = T.TryGetComponent(out Useable U);
-
             string DisplayText = PH.HeadRayHit.transform.gameObject.name;
             if (IsItem)
             {
