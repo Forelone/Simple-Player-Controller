@@ -148,6 +148,8 @@ GameObject:
   - component: {fileID: 4993934468966281916}
   - component: {fileID: 8337675870079886620}
   - component: {fileID: 8230196099948414251}
+  - component: {fileID: 5240195836456563257}
+  - component: {fileID: 8740768355382974364}
   - component: {fileID: 7873574291554751644}
   m_Layer: 3
   m_Name: Player
@@ -293,6 +295,43 @@ MonoBehaviour:
   - {fileID: 0}
   RightArmAnim: {fileID: 4002200361811342808}
   PHands: {fileID: 7058320983379530502}
+--- !u!114 &5240195836456563257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153405953771420644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 485740b6ad6f79de880bf99b1e6e5217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RG: {fileID: 7873574291554751644}
+  LeftPelvis: {fileID: 750397652761985360}
+  RightPelvis: {fileID: 6185923523880160818}
+  RDownLeg: {fileID: 4833145811572997605}
+  LDownLeg: {fileID: 7694782904153062600}
+  Divide: 100
+  MinSpeed: 2
+  Angle: 45
+--- !u!114 &8740768355382974364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153405953771420644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 266286854a38de2dc98d87903b413415, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GrabKey: 101
+  PH: {fileID: 0}
+  ArmToAim: {fileID: 0}
+  HandToGrab: {fileID: 0}
+  CurrentlyGrabbing: {fileID: 0}
 --- !u!54 &7873574291554751644
 Rigidbody:
   m_ObjectHideFlags: 0
