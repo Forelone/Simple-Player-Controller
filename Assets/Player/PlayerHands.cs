@@ -12,6 +12,7 @@ public class PlayerHands : MonoBehaviour
 
     [SerializeField] Transform RightHand, LeftHand, Head, LeftArm, RightArm;
     [SerializeField] PlayerInput PInput;
+    [SerializeField] LayerMask HandInteractLayer;
 
     int RStatus; //0 is idle, 1 is picking up, 2 is holding
     bool DidHit; RaycastHit hit;
@@ -40,7 +41,7 @@ public class PlayerHands : MonoBehaviour
     void FixedUpdate()
     {
              hit = new RaycastHit(); Useable HitUse = null; Item HitItem = null;
-             DidHit = Physics.Raycast(Head.position, Head.forward, out hit, 2f);
+             DidHit = Physics.Raycast(Head.position, Head.forward, out hit, 2f, HandInteractLayer);
         bool HitUseable = DidHit && hit.transform.TryGetComponent(out HitUse);
         bool HitAItem = DidHit && hit.transform.TryGetComponent(out HitItem);
 
@@ -59,7 +60,7 @@ public class PlayerHands : MonoBehaviour
             default: //Not equipped with a item
                 if (DidHit)
                 {
-                    var Dir = (hit.transform.position - LeftArm.position);
+                    var Dir = hit.point - RightArm.position;
                     RDesired = Quaternion.LookRotation(Dir);
                 }
 
@@ -80,7 +81,7 @@ public class PlayerHands : MonoBehaviour
             case 1: //Equipping a item
                 if (DidHit)
                 {
-                    var Dir = hit.transform.position - LeftArm.position;
+                    var Dir = hit.point - RightArm.position;
                     RDesired = Quaternion.LookRotation(Dir);
                 }
                 break;

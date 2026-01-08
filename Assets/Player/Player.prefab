@@ -128,7 +128,7 @@ Animation:
   m_Animation: {fileID: 7400000, guid: 1c3c7f08e8ec26e8a93176e81609151f, type: 2}
   m_Animations:
   - {fileID: 7400000, guid: 1c3c7f08e8ec26e8a93176e81609151f, type: 2}
-  - {fileID: 7400000, guid: 75fb605a554baddf4924704fd56682f7, type: 2}
+  - {fileID: 7400000, guid: 47f4db82eb8c4d4bba6a26975e49fe1d, type: 2}
   m_WrapMode: 0
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
@@ -192,6 +192,9 @@ MonoBehaviour:
   LeftArm: {fileID: 2624912070566975945}
   RightArm: {fileID: 6501773911023520281}
   PInput: {fileID: 7887733244745508973}
+  HandInteractLayer:
+    serializedVersion: 2
+    m_Bits: 51
 --- !u!114 &7887733244745508973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -277,7 +280,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee1ba1fcc42d3c0c89fe7f6dfbfdd597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Inventory: []
+  Inventory:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   RightArmAnim: {fileID: 4002200361811342808}
   PHands: {fileID: 7058320983379530502}
 --- !u!54 &7873574291554751644
@@ -1021,6 +1034,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5173599103555457947}
+  - component: {fileID: 1888812167507994287}
   m_Layer: 3
   m_Name: Bones
   m_TagString: Untagged
@@ -1046,6 +1060,22 @@ Transform:
   - {fileID: 6185923523880160818}
   m_Father: {fileID: 1692021829874934513}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!111 &1888812167507994287
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3729800841135997213}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 706c9c77205d9329db5bef3f51accaa2, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 706c9c77205d9329db5bef3f51accaa2, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &3740852613996594182
 GameObject:
   m_ObjectHideFlags: 0
@@ -1078,7 +1108,7 @@ Transform:
   m_Children:
   - {fileID: 7637231393706712046}
   m_Father: {fileID: 5173599103555457947}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: -90}
 --- !u!65 &6977292485103688160
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1249,7 +1279,7 @@ Transform:
   m_Children:
   - {fileID: 6617766904630672644}
   m_Father: {fileID: 5173599103555457947}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 90}
 --- !u!65 &8614254057094605892
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2007,7 +2037,7 @@ SkinnedMeshRenderer:
   - {fileID: -2207724687267852407, guid: b20f84c464ea9067ebc78dadedcc37d9, type: 3}
   - {fileID: 1986464522197997759, guid: b20f84c464ea9067ebc78dadedcc37d9, type: 3}
   - {fileID: -2379149501886173063, guid: b20f84c464ea9067ebc78dadedcc37d9, type: 3}
-  - {fileID: 3170531198488047425, guid: b20f84c464ea9067ebc78dadedcc37d9, type: 3}
+  - {fileID: -2207724687267852407, guid: b20f84c464ea9067ebc78dadedcc37d9, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

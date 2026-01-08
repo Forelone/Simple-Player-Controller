@@ -14,8 +14,9 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector3 PMove = PInput.DesiredMovement;
-        Vector3 O = Vector3.Lerp(RG.velocity, PMove * KMH, Time.fixedDeltaTime * AccelerationMul);
+        Vector3 PMove = PInput.DesiredMovement * KMH;
+        float YAxis = RG.velocity.y;
+        Vector3 O = Vector3.Lerp(RG.velocity, PMove + Vector3.up * YAxis, Time.fixedDeltaTime * AccelerationMul);
         RG.velocity = O;
 
         if (PInput.Jump && !TrackingJump) StartCoroutine(JumpHandle());
