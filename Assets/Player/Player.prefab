@@ -67,7 +67,7 @@ GameObject:
   - component: {fileID: 8230196099948414251}
   - component: {fileID: 5240195836456563257}
   - component: {fileID: 8740768355382974364}
-  - component: {fileID: 7873574291554751644}
+  - component: {fileID: 7468378646215101210}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -126,16 +126,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de0b5c81e57812d3f8dc5f9d3fa6426e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Movement: {x: 0, y: 0, z: 0}
-  Rotation: {x: 0, y: 0}
-  VerticalMul: 40
-  HorizontalMul: 50
-  MinXRot: -80
-  MaxXRot: 80
-  M1: 0
-  M2: 0
-  M3: 0
-  J: 0
 --- !u!114 &8569132736193107390
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,12 +138,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 760faaf38104f7698bd2e456c9bc23eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  KMH: 10
-  AccelerationMul: 2
-  PInput: {fileID: 7887733244745508973}
-  RG: {fileID: 7873574291554751644}
-  JumpMul: 1
-  JumpCooldown: 1
+  WalkSpeed: 1
+  RunSpeed: 2
 --- !u!114 &4993934468966281916
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,7 +153,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Neck: {fileID: 7699720771294364281}
-  PInput: {fileID: 7887733244745508973}
+  VerticalMul: 1
+  HorizontalMul: 1
+  MinY: -80
+  MaxY: 80
 --- !u!114 &8337675870079886620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,7 +219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 485740b6ad6f79de880bf99b1e6e5217, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RG: {fileID: 7873574291554751644}
+  RG: {fileID: 0}
   LeftPelvis: {fileID: 750397652761985360}
   RightPelvis: {fileID: 6185923523880160818}
   RDownLeg: {fileID: 4833145811572997605}
@@ -257,7 +246,7 @@ MonoBehaviour:
   HandToGrab: {fileID: 8484583909872467066}
   HeadToRotate: {fileID: 2110177199869866593}
   CurrentlyGrabbing: {fileID: 0}
---- !u!54 &7873574291554751644
+--- !u!54 &7468378646215101210
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -265,7 +254,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 153405953771420644}
   serializedVersion: 4
-  m_Mass: 70
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -280,10 +269,10 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 3
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &243159911675240500
 GameObject:
   m_ObjectHideFlags: 0

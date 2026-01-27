@@ -1,21 +1,68 @@
+using System;
 using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
-    [SerializeField] Vector3 Movement;
-    public Vector3 DesiredMovement { get { return Movement; } }
+    public event Action<Vector3> OnMovement;
+    private Vector3 Movement;
+    public Vector3 DesiredMovement 
+    { 
+        get { return Movement; }
+        set
+        {
+            if (Movement != value)
+            Movement = value;
+            MovementChange(Movement);
+        } 
+    }
+    void MovementChange(Vector3 NewMove) => OnMovement?.Invoke(NewMove);
 
-    [SerializeField] Vector2 Rotation;
-    public Vector2 DesiredRotation { get { return Rotation; } }
-    [SerializeField] float VerticalMul = 1, HorizontalMul = 1;
+    public event Action<Vector2> OnMouseMovement;
+    private Vector2 Rotation;
+    public Vector2 DesiredRotation 
+    { 
+        get { return Rotation; }
+        set
+        {
+            if (Rotation != value)
+            Rotation = value;
+            RotationChange(Rotation);
+        } 
+    }
+    void RotationChange(Vector2 NewRota) => OnMouseMovement?.Invoke(NewRota);
+    
+    public event Action OnPrimaryClick;
+    private bool M1 = false;
+    public bool PrimaryHandUse 
+    { 
+        get { return M1; }
+        set 
+        { 
+            if (M1 != value) 
+            M1 = value; 
+            PrimaryClick(); 
+        }    
+    } 
+    void PrimaryClick() => OnPrimaryClick?.Invoke();
+    
+    public event Action OnSecondaryClick;    
+    private bool M2 = false;
+    public bool SecondaryHandUse 
+    { 
+        get { return M2; }
+        set { if (M2 != value) M2 = value; SecondaryClick(); } 
+    } 
+    void SecondaryClick() => OnSecondaryClick?.Invoke();
+    
+    public event Action OnMiddleClick;
+    private bool M3 = false;
+    public bool InteractiveUse 
+    { 
+        get { return M3; } 
+        set { if (M3 != value) M3 = value; MiddleClick(); }
+    } 
+    void MiddleClick() => OnMiddleClick?.Invoke();
 
-    [SerializeField] float MinXRot = -80, MaxXRot = 80;
-
-    [SerializeField] bool M1 = false, M2 = false, M3 = false, J = false;
-    public bool PrimaryHandUse { get { return M1; } }
-    public bool SecondaryHandUse { get { return M2; } }
-    public bool InteractiveUse { get { return M3; } }
-    public bool Jump { get { return J; } }
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -23,22 +70,23 @@ public class PlayerInput : MonoBehaviour
     }
 
     float VerRot = 0;
+    Vector2 PastRotation = Vector2.zero;
 
     void FixedUpdate()
     {
-        float h = Input.GetAxis("Horizontal"), v = Input.GetAxis("Vertical");
-        Movement = transform.forward * v + transform.right * h;
+        float PressShift = Input.GetAxisRaw("Sprint");
+        float h = Input.GetAxisRaw("Horizontal"), v = Input.GetAxisRaw("Vertical"), u = Input.GetAxisRaw("Jump") == 1 ? 1 : 0;
+        Movement = new Vector3(h,u,v);
+        Movement *= PressShift == 1 ? 2 : 1;
+        if (Movement != Vector3.zero) OnMovement.Invoke(Movement);
 
-        float X = Input.GetAxis("Mouse X") * HorizontalMul * Time.deltaTime, Y = Input.GetAxis("Mouse Y") * VerticalMul * Time.deltaTime;
-
-        VerRot -= Y;
-        VerRot = Mathf.Clamp(VerRot, MinXRot, MaxXRot);        
+        float X = Input.GetAxis("Mouse X"), Y = Input.GetAxis("Mouse Y");
+        Rotation = new Vector2(X,Y);
+        if (Rotation != PastRotation) OnMouseMovement.Invoke(Rotation);
+        PastRotation = Rotation;
         
-        Rotation = Vector2.up * X + Vector2.right * VerRot;
-
-        M1 = Input.GetAxisRaw("Fire1") == 1;
+        M1 = Input.GetAxisRaw("Fire1") == 1;    
         M2 = Input.GetAxisRaw("Fire2") == 1;
         M3 = Input.GetAxisRaw("Fire3") == 1;
-        J = Input.GetAxisRaw("Jump") == 1;
     }
 }

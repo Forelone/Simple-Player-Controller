@@ -4,52 +4,24 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] float KMH = 1, AccelerationMul;
-    [SerializeField] PlayerInput PInput;
-    [SerializeField] Rigidbody RG;
+    [SerializeField] float WalkSpeed = 1, RunSpeed = 2;
 
-    [SerializeField] float JumpMul = 2,JumpCooldown = 1f;
-    float Cooldown = 0;
-    bool TrackingJump = false;
+    CharacterController CC;
 
-    void FixedUpdate()
+    void Start()
     {
-        Vector3 PMove = PInput.DesiredMovement * KMH;
-        float YAxis = RG.velocity.y;
-        Vector3 O = Vector3.Lerp(RG.velocity, PMove + Vector3.up * YAxis, Time.fixedDeltaTime * AccelerationMul);
-        RG.velocity = O;
-
-        if (PInput.Jump && !TrackingJump) StartCoroutine(JumpHandle());
+        PlayerInput playerInput = GetComponent<PlayerInput>();
+        CC = GetComponent<CharacterController>();
+        playerInput.OnMovement += HandleMovement;
     }
 
-    int JumpFrame = 4, CurFrame; //Player has to leave jump button within 4 frame. why you ask? for hands implementation i say.
-    IEnumerator JumpHandle()
+    public void HandleMovement(Vector3 NewMovement)
     {
-        if (!TrackingJump && Cooldown <= 0f)
-        {
-            TrackingJump = true;
-
-            for (CurFrame = JumpFrame; CurFrame > 0; CurFrame--)
-            {
-                if (!PInput.Jump)
-                {
-                    RG.AddForce(transform.up * KMH * JumpMul, ForceMode.VelocityChange);
-                    StartCoroutine(CooldownHandle());
-                    break;
-                }
-                yield return new WaitForEndOfFrame();
-            }
-            TrackingJump = false;
-        }
-    }
-
-    IEnumerator CooldownHandle()
-    {
-        Cooldown = JumpCooldown;
-        while (Cooldown > 0)
-        {
-            Cooldown -= Time.fixedDeltaTime;
-            yield return new WaitForFixedUpdate();
-        }
+        float Mag = NewMovement.magnitude;
+        NewMovement = NewMovement.normalized;
+        
+        Vector3 GroundMovement = transform.forward * NewMovement.z + transform.right * NewMovement.x;
+        GroundMovement *= Mag == 2f ? RunSpeed : WalkSpeed; 
+        transform.Translate(GroundMovement * Time.fixedDeltaTime,Space.World);
     }
 }

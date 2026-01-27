@@ -8,3 +8,9 @@ Packages/manifest.json
 Packages/packages-lock.json
 .vscode/*.json
 Assembly-CSharp.csproj
+Assets/*.meta
+Assets/RaceTrigger.cs
+Assets/RaceTrack.cs
+Assets/Luger.png
+Assets/Level/MovementTest.unity
+Assets/Level/MovementTest.unity.meta
