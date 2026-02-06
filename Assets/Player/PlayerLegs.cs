@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerLegs : MonoBehaviour
 {
-    [SerializeField] Rigidbody RG;
+    [SerializeField] CharacterController RG;
     [SerializeField] Transform LeftPelvis, RightPelvis, RDownLeg, LDownLeg;
     [SerializeField] float Divide = 10f;
     [SerializeField] float MinSpeed = 5f;
@@ -13,7 +13,7 @@ public class PlayerLegs : MonoBehaviour
 
     void FixedUpdate()
     {
-        var Speed = Mathf.Abs(RG.velocity.magnitude + RG.angularVelocity.magnitude);
+        var Speed = Mathf.Abs(RG.velocity.magnitude);
         if (Speed > MinSpeed)
         {
             Sin += RG.velocity.magnitude / Divide;

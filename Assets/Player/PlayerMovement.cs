@@ -13,10 +13,12 @@ public class PlayerMovement : MonoBehaviour
     Vector3 Velocity,DesiredVelocity;
 
     CharacterController CC;
+    Rigidbody RG;
     void Start()
     {
         PlayerInput playerInput = GetComponent<PlayerInput>();
         CC = GetComponent<CharacterController>();
+        RG = GetComponent<Rigidbody>();
         playerInput.OnMovement += HandleMovement;
     }
 
@@ -24,7 +26,8 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector3 Origin = transform.position - transform.up * GroundCheckOffset, Direction = -transform.up;
         Ray ray = new Ray(Origin,Direction);
-        OnGround = Physics.Raycast(ray,GroundCheckDist);
+        RaycastHit hit;
+        OnGround = Physics.Raycast(ray,out hit,GroundCheckDist) && hit.distance < GroundCheckDist / 2;
 
         Velocity = OnGround ? Vector3.Lerp(Velocity,DesiredVelocity,Time.fixedDeltaTime * DampSpeed) :
                               Vector3.Lerp(Velocity,transform.up * Gravity,Time.fixedDeltaTime / DampSpeed);
@@ -42,7 +45,7 @@ public class PlayerMovement : MonoBehaviour
         NewMovement = NewMovement.normalized;
 
         DesiredVelocity = transform.forward * NewMovement.z + transform.right * NewMovement.x;
-        DesiredVelocity += NewMovement.y > 0.99f ? transform.up * JumpPower * -Gravity : Vector3.zero;
+        DesiredVelocity += NewMovement.y > 0 ? transform.up * JumpPower * -Gravity : Vector3.zero;
         DesiredVelocity *= Mag == 2f ? RunSpeed : WalkSpeed; 
     }
 }
