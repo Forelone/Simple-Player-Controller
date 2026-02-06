@@ -71,14 +71,14 @@ public class PlayerInput : MonoBehaviour
 
     float VerRot = 0;
     Vector2 PastRotation = Vector2.zero;
-
+    Vector3 PastMovement = Vector3.zero;
     void FixedUpdate()
     {
         float PressShift = Input.GetAxisRaw("Sprint");
         float h = Input.GetAxisRaw("Horizontal"), v = Input.GetAxisRaw("Vertical"), u = Input.GetAxisRaw("Jump") == 1 ? 1 : 0;
         Movement = new Vector3(h,u,v);
         Movement *= PressShift == 1 ? 2 : 1;
-        if (Movement != Vector3.zero) OnMovement.Invoke(Movement);
+        if (Movement != PastMovement) { OnMovement.Invoke(Movement); PastMovement = Movement; }
 
         float X = Input.GetAxis("Mouse X"), Y = Input.GetAxis("Mouse Y");
         Rotation = new Vector2(X,Y);
