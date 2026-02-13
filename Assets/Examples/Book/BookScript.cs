@@ -36,7 +36,6 @@ public class BookScript : MonoBehaviour
 
             default:
                 Animation.Play("BookFlip");
-                ChangeText(string.Empty,string.Empty);
             break;
         }
 
@@ -48,6 +47,8 @@ public class BookScript : MonoBehaviour
             DisplayText1 = CurrentPage + Value > LastPage ? string.Empty : Texts[CurrentPage + Value];
             ChangeText(DisplayText0,DisplayText1);
         }
+        else
+            ChangeText(string.Empty,string.Empty);
     }
 
     void ChangeText(string DispText0,string DispText1)
