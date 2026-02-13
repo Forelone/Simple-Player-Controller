@@ -144,7 +144,7 @@ MonoBehaviour:
   JumpPower: 1.5
   DampSpeed: 10
   GroundCheckOffset: 1
-  GroundCheckDist: 0.1
+  GroundCheckDist: 0.5
   Gravity: -9.81
   DebugMode: 1
 --- !u!114 &4993934468966281916
@@ -221,7 +221,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 153405953771420644}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 485740b6ad6f79de880bf99b1e6e5217, type: 3}
   m_Name: 
@@ -305,7 +305,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.25, z: 0}
+  m_Center: {x: 0, y: 0.3, z: 0}
 --- !u!1 &243159911675240500
 GameObject:
   m_ObjectHideFlags: 0
