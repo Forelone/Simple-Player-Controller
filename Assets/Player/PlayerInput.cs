@@ -32,7 +32,7 @@ public class PlayerInput : MonoBehaviour
     void RotationChange(Vector2 NewRota) => OnMouseMovement?.Invoke(NewRota);
     
     public event Action OnPrimaryClick;
-    private bool M1 = false,PM1 = false;
+    private bool M1 = false;
     public bool PrimaryHandUse 
     { 
         get { return M1; }
@@ -81,8 +81,6 @@ public class PlayerInput : MonoBehaviour
     }
 
     public bool IsPlayerLefty { get {return PlayerPrefs.GetInt("Lefty") > 0; }}
-
-    float VerRot = 0;
     Vector2 PastRotation = Vector2.zero;
     Vector3 PastMovement = Vector3.zero;
     void FixedUpdate()

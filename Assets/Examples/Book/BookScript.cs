@@ -8,8 +8,6 @@ public class BookScript : MonoBehaviour
     [SerializeField] TextMesh TM0, TM1;
     [SerializeField] Animation Animation;
     [SerializeField] int CurrentPage = -1; //-1 is closed. 0 is first page. Last count of Texts is... well.. the last index.
-    [SerializeField] bool Open = false;
-
     void Awake()
     {
         ChangeText(string.Empty,string.Empty);
@@ -25,13 +23,11 @@ public class BookScript : MonoBehaviour
         switch (DesiredPage)
         {
             case -1:
-                Animation.Play("BookClose");
-                Open = false; //Cleanest code ever! I love myself! You should too! YOU SHOULD LOVE YOURSELF, NOW!
+                Animation.Play("BookClose"); //Cleanest code ever! I love myself! You should too! YOU SHOULD LOVE YOURSELF, NOW!
             break;
 
             case 0:
                 Animation.Play("BookOpen");
-                Open = true;
             break;
 
             default:

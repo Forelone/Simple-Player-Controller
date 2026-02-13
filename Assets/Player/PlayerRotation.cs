@@ -12,8 +12,6 @@ public class PlayerRotation : MonoBehaviour
         playerInput.OnMouseMovement += HandleRotation;
     }
 
-    [SerializeField] float VerticalMul = 1, HorizontalMul = 1;
-
     [SerializeField] float MinY = -80, MaxY = 80;
 
     float NeckRot = 0f;
