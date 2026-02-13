@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class BookScript : MonoBehaviour
 {
-    public List<string> Texts;
+    public List<string> Texts = new List<string>();
     [SerializeField] TextMesh TM0, TM1;
     [SerializeField] Animation Animation;
-    int CurrentPage = -1; //-1 is closed. 0 is first page. Last count of Texts is... well.. the last index.
+    [SerializeField] int CurrentPage = -1; //-1 is closed. 0 is first page. Last count of Texts is... well.. the last index.
     [SerializeField] bool Open = false;
 
     void Awake()
@@ -15,30 +15,39 @@ public class BookScript : MonoBehaviour
         ChangeText(string.Empty,string.Empty);
     }
 
-    public void IncreasePage()
+    public void IncreasePage(int Value = 1)
     {
         int LastPage = Texts.Count - 1;
-
         if (LastPage == -1) return;
 
-        int DesiredPage = CurrentPage + 1 > LastPage ? -1 : CurrentPage + 1;
-
-        string DisplayText0 = Texts[CurrentPage], DisplayText1;
-        DisplayText1 = CurrentPage + 1 > LastPage ? string.Empty : Texts[CurrentPage + 1];
+        int DesiredPage = CurrentPage + Value> LastPage ? -1 : CurrentPage + Value;
 
         switch (DesiredPage)
         {
             case -1:
-                Animation.Play(Open ? "BookClose" : "BookOpen");
-                Open = !Open; //Cleanest code ever! I love myself! You should too! YOU SHOULD LOVE YOURSELF, NOW!
+                Animation.Play("BookClose");
+                Open = false; //Cleanest code ever! I love myself! You should too! YOU SHOULD LOVE YOURSELF, NOW!
+            break;
+
+            case 0:
+                Animation.Play("BookOpen");
+                Open = true;
             break;
 
             default:
                 Animation.Play("BookFlip");
+                ChangeText(string.Empty,string.Empty);
             break;
         }
-        
-        ChangeText(DisplayText0,DisplayText1);
+
+        CurrentPage = DesiredPage;
+
+        if (CurrentPage != -1)
+        {
+            string DisplayText0 = Texts[CurrentPage], DisplayText1;
+            DisplayText1 = CurrentPage + Value > LastPage ? string.Empty : Texts[CurrentPage + Value];
+            ChangeText(DisplayText0,DisplayText1);
+        }
     }
 
     void ChangeText(string DispText0,string DispText1)
