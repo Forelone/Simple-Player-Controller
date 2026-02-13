@@ -32,7 +32,7 @@ public class PlayerInput : MonoBehaviour
     void RotationChange(Vector2 NewRota) => OnMouseMovement?.Invoke(NewRota);
     
     public event Action OnPrimaryClick;
-    private bool M1 = false;
+    private bool M1 = false,PM1 = false;
     public bool PrimaryHandUse 
     { 
         get { return M1; }
@@ -54,20 +54,33 @@ public class PlayerInput : MonoBehaviour
     } 
     void SecondaryClick() => OnSecondaryClick?.Invoke();
     
-    public event Action OnMiddleClick;
+    public event Action OnInteractClick;
     private bool M3 = false;
     public bool InteractiveUse 
     { 
         get { return M3; } 
         set { if (M3 != value) M3 = value; MiddleClick(); }
     } 
-    void MiddleClick() => OnMiddleClick?.Invoke();
+    void MiddleClick() => OnInteractClick?.Invoke();
+
+    public event Action OnRefuseClick;
+    private bool M4 = false;
+    public bool Refuse
+    {
+        get { return M4; }
+        set { if (M4 != value) M4 = value; RefuseClick(); }
+    }
+    void RefuseClick() => OnRefuseClick.Invoke();
+
+
 
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
+
+    public bool IsPlayerLefty { get {return PlayerPrefs.GetInt("Lefty") > 0; }}
 
     float VerRot = 0;
     Vector2 PastRotation = Vector2.zero;
@@ -89,8 +102,19 @@ public class PlayerInput : MonoBehaviour
         if (Rotation != PastRotation) OnMouseMovement.Invoke(Rotation);
         PastRotation = Rotation;
         
-        M1 = Input.GetAxisRaw("Fire1") == 1;    
+        M1 = Input.GetAxisRaw("Fire1") == 1;
+        if (M1) OnPrimaryClick.Invoke();
+
         M2 = Input.GetAxisRaw("Fire2") == 1;
-        M3 = Input.GetAxisRaw("Fire3") == 1;
+        if (M2) OnSecondaryClick.Invoke();
+
+        M3 = Input.GetAxisRaw("Interact") == 1;
+        if (M3) OnInteractClick.Invoke();
+        
+        M4 = Input.GetAxisRaw("Drop") == 1;
+        if (M4) OnRefuseClick.Invoke();
+    
     }
+
+
 }

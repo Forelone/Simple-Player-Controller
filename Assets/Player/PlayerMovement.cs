@@ -11,14 +11,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] bool DebugMode = true;
 
     Vector3 Velocity,DesiredVelocity;
-
     CharacterController CC;
-    Rigidbody RG;
+    void Awake()
+    {
+        CC = GetComponent<CharacterController>();
+    }
+
     void OnEnable()
     {
         PlayerInput playerInput = GetComponent<PlayerInput>();
-        CC = GetComponent<CharacterController>();
-        RG = GetComponent<Rigidbody>();
         playerInput.OnMovement += HandleMovement;
     }
 

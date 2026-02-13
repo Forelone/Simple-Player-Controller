@@ -7,7 +7,7 @@ using UnityEngine;
 // You can disable or delete this from your Scripts and use the rest like normal.
 public class PlayerInventory : MonoBehaviour
 {
-    [SerializeField] List<Item> Inventory;
+   /* [SerializeField] List<Item> Inventory;
     [SerializeField] Animation RightArmAnim;
 
     [SerializeField] PlayerHands PHands;
@@ -92,5 +92,5 @@ public class PlayerInventory : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         SwitchingItem = false;
-    }
+    }*/
 }
