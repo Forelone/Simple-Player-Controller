@@ -7,13 +7,15 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerHands : MonoBehaviour
 {
-    [SerializeField] Transform RightHand, LeftHand, Head, LeftArm, RightArm;
+    [SerializeField] Transform RightHand, LeftHand;
     PlayerInput PInput;
     [SerializeField] float EyeDist = 2f;
     Camera Eye;
     [SerializeField] LayerMask HandInteractLayer;
 
     [SerializeField] bool DebugMode;
+
+    public bool Lefty {get{ return PInput.IsPlayerLefty; }}
 
     void Awake()
     {

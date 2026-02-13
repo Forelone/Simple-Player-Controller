@@ -41,8 +41,8 @@ public class Item : MonoBehaviour
     public event Action OnDrop;
     public event Action OnEquip;
 
-    public void Equip() => OnEquip.Invoke();
-    public void Drop() => OnDrop.Invoke();
+    public void Equip() => OnEquip?.Invoke();
+    public void Drop() => OnDrop?.Invoke();
 
     public Rigidbody RigidBody_ { get { return RG; } }
     public Collider Collider_ { get { return Col; } }

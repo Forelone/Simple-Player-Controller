@@ -70,7 +70,7 @@ public class PlayerInput : MonoBehaviour
         get { return M4; }
         set { if (M4 != value) M4 = value; RefuseClick(); }
     }
-    void RefuseClick() => OnRefuseClick.Invoke();
+    void RefuseClick() => OnRefuseClick?.Invoke();
 
 
 
