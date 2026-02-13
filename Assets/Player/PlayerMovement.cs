@@ -14,12 +14,18 @@ public class PlayerMovement : MonoBehaviour
 
     CharacterController CC;
     Rigidbody RG;
-    void Start()
+    void OnEnable()
     {
         PlayerInput playerInput = GetComponent<PlayerInput>();
         CC = GetComponent<CharacterController>();
         RG = GetComponent<Rigidbody>();
         playerInput.OnMovement += HandleMovement;
+    }
+
+    void OnDisable()
+    {
+        PlayerInput playerInput = GetComponent<PlayerInput>();
+        playerInput.OnMovement -= HandleMovement;        
     }
 
     void FixedUpdate()
