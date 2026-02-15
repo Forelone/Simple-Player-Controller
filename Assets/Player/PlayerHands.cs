@@ -29,6 +29,7 @@ public class PlayerHands : MonoBehaviour
         PInput.OnSecondaryClick += SecondaryHandle;
         PInput.OnInteractClick += InteractHandle;
         PInput.OnRefuseClick += DropHandle;
+        PInput.OnMouseMovement += HandItemHandle;
 
         if (DebugMode)
             print("PH Active!");
@@ -40,6 +41,7 @@ public class PlayerHands : MonoBehaviour
         PInput.OnSecondaryClick -= SecondaryHandle;
         PInput.OnInteractClick -= InteractHandle;
         PInput.OnRefuseClick -= DropHandle;
+        PInput.OnMouseMovement -= HandItemHandle;
     
         if (DebugMode)
             print("PH De-Active!");
@@ -65,6 +67,15 @@ public class PlayerHands : MonoBehaviour
 
     Item ItemInMainHand;
     public bool IsHandFull { get { return ItemInMainHand != null; } }
+
+    void HandItemHandle(Vector2 _)
+    {
+        if (!IsHandFull) return;
+
+        Transform Hand = PInput.IsPlayerLefty ? LeftHand : RightHand;
+        ItemInMainHand.transform.SetPositionAndRotation(Hand.position,Hand.rotation);
+    }
+
     void PrimaryHandle()
     {
         if (DebugMode) print("Primary Call");
@@ -105,7 +116,7 @@ public class PlayerHands : MonoBehaviour
         Item OldItem = ItemInMainHand;
 
         OldItem.RigidBody_.isKinematic = false;
-        OldItem.transform.SetParent(transform.parent);
+        OldItem.transform.SetParent(null);
         ItemInMainHand = null;
     }
 
@@ -129,8 +140,11 @@ public class PlayerHands : MonoBehaviour
 
         Transform Hand = PInput.IsPlayerLefty ? LeftHand : RightHand;
 
+        ItemToPickup.transform.SetParent(null);
         ItemToPickup.RigidBody_.isKinematic = true;
-        ItemToPickup.transform.SetPositionAndRotation(Hand.position,Hand.rotation);
+        ItemToPickup.transform.position = Hand.position;
+        ItemToPickup.transform.rotation = Hand.rotation;
+        //ItemToPickup.transform.SetPositionAndRotation(Hand.position,Hand.rotation);
         ItemToPickup.transform.SetParent(Hand);
 
         ItemInMainHand = ItemToPickup;
