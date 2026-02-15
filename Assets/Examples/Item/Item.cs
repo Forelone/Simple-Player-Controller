@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    [SerializeField] float Pickup_Delay = 1f;
-    public float PickupDelay { get { return Pickup_Delay; } }
-
     Useable Use;
     Rigidbody RG;
     [SerializeField] Collider Col; //This Collider is for Grabbing. If not specified first one will be grabbed. Creatures will grab item from center of this collider
@@ -16,7 +13,7 @@ public class Item : MonoBehaviour
     void Awake()
     {
         RG = GetComponent<Rigidbody>();
-        Col = GetComponent<Collider>();
+        Col = Col == null ? GetComponent<Collider>() : Col;
         Cols = GetComponents<Collider>(); //Yes.
         Use = GetComponent<Useable>();
 

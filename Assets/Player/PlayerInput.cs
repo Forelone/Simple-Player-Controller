@@ -72,7 +72,14 @@ public class PlayerInput : MonoBehaviour
     }
     void RefuseClick() => OnRefuseClick?.Invoke();
 
-
+    public event Action OnInspectClick;
+    private bool M5 = false;
+    public bool Inspect
+    {
+        get { return M5; }
+        set { if (M5 != value) M5 = value; InspectClick(); }
+    }
+    void InspectClick() => OnInspectClick?.Invoke();
 
     void Start()
     {
@@ -101,17 +108,22 @@ public class PlayerInput : MonoBehaviour
         PastRotation = Rotation;
         
         M1 = Input.GetAxisRaw("Fire1") == 1;
-        if (M1) OnPrimaryClick.Invoke();
+        if (PrimaryHandUse) OnPrimaryClick.Invoke();
 
         M2 = Input.GetAxisRaw("Fire2") == 1;
-        if (M2) OnSecondaryClick.Invoke();
+        if (SecondaryHandUse) OnSecondaryClick.Invoke();
 
         M3 = Input.GetAxisRaw("Interact") == 1;
-        if (M3) OnInteractClick.Invoke();
+        if (InteractiveUse) OnInteractClick.Invoke();
         
         M4 = Input.GetAxisRaw("Drop") == 1;
-        if (M4) OnRefuseClick.Invoke();
+        if (Refuse) OnRefuseClick.Invoke();
     
+        M5 = Input.GetAxisRaw("Inspect") == 1;
+        if (Inspect) OnInspectClick.Invoke();
+
+        Cursor.lockState = Inspect ? CursorLockMode.Confined : CursorLockMode.Locked;
+        Cursor.visible = Inspect;
     }
 
 

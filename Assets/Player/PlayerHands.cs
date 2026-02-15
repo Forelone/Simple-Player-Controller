@@ -11,6 +11,8 @@ public class PlayerHands : MonoBehaviour
     PlayerInput PInput;
     [SerializeField] float EyeDist = 2f;
     Camera Eye;
+    public Camera Eye_
+    { get { return Eye; } }
     [SerializeField] LayerMask HandInteractLayer;
 
     [SerializeField] bool DebugMode;
@@ -30,6 +32,7 @@ public class PlayerHands : MonoBehaviour
         PInput.OnInteractClick += InteractHandle;
         PInput.OnRefuseClick += DropHandle;
         PInput.OnMouseMovement += HandItemHandle;
+        PInput.OnInspectClick += InspectHandle;
 
         if (DebugMode)
             print("PH Active!");
@@ -42,7 +45,8 @@ public class PlayerHands : MonoBehaviour
         PInput.OnInteractClick -= InteractHandle;
         PInput.OnRefuseClick -= DropHandle;
         PInput.OnMouseMovement -= HandItemHandle;
-    
+        PInput.OnInspectClick -= InspectHandle;
+
         if (DebugMode)
             print("PH De-Active!");
     }
@@ -66,7 +70,11 @@ public class PlayerHands : MonoBehaviour
     }
 
     Item ItemInMainHand;
+    [SerializeField] Rigidbody RigidbodyInOtherHand;
+    float RGDist = 0;
     public bool IsHandFull { get { return ItemInMainHand != null; } }
+    public bool IsOHandFull { get { return RigidbodyInOtherHand != null; } }
+    public bool Inspecting { get { return PInput.Inspect; } }
 
     void HandItemHandle(Vector2 _)
     {
@@ -79,15 +87,48 @@ public class PlayerHands : MonoBehaviour
     void PrimaryHandle()
     {
         if (DebugMode) print("Primary Call");
-        if (IsHandFull)
-            ItemInMainHand.PrimaryUse();
+        
+        if (Inspecting)
+        {
+            (bool IsSomethingInFrontOfMe,RaycastHit Hit) = EyeRay();
+            bool HasRG = Hit.rigidbody != null;
+            if (!IsOHandFull)
+            {
+                if (!IsSomethingInFrontOfMe) return;
+                if (!HasRG) return;
+
+                RigidbodyInOtherHand = Hit.rigidbody;
+                RGDist = Hit.distance;
+            }
+            else
+            {
+                Vector3 MousePos = Input.mousePosition;
+                Ray ray = Eye.ScreenPointToRay(MousePos);
+                Vector3 SpacePos = ray.origin + ray.direction * RGDist;
+                RigidbodyInOtherHand.position = SpacePos;
+                RigidbodyInOtherHand.rotation = LeftHand.rotation;
+                if (!RigidbodyInOtherHand.isKinematic)
+                {
+                RigidbodyInOtherHand.angularVelocity = Vector3.zero;
+                RigidbodyInOtherHand.velocity = Vector3.zero;
+                }
+            }
+        }
         else
-            Punch();
+        {
+            RigidbodyInOtherHand = null;
+
+            if (IsHandFull)
+                ItemInMainHand.PrimaryUse();
+            else
+                Punch();   
+        }
     }
 
     void SecondaryHandle()
     {
         if (DebugMode) print("Secondary Call");
+        
         if (IsHandFull)
             ItemInMainHand.SecondaryUse();
     }
@@ -99,12 +140,12 @@ public class PlayerHands : MonoBehaviour
 
         if (!IsSomethingInFrontOfMe) return;
 
-        if (Hit.transform.TryGetComponent(out Item I))
+        if (Hit.collider.transform.TryGetComponent(out Item I))
             if (IsHandFull) 
                 SwitchHandItem(I);
             else
                 PickupItem(I);
-        else if (Hit.transform.TryGetComponent(out Useable U))
+        else if (Hit.collider.transform.TryGetComponent(out Useable U))
             U.Use_();
     }
 
@@ -118,6 +159,11 @@ public class PlayerHands : MonoBehaviour
         OldItem.RigidBody_.isKinematic = false;
         OldItem.transform.SetParent(null);
         ItemInMainHand = null;
+    }
+
+    void InspectHandle()
+    {
+        if (!PInput.PrimaryHandUse) RigidbodyInOtherHand = null;
     }
 
     public (bool,RaycastHit) EyeRay()
@@ -160,6 +206,11 @@ public class PlayerHands : MonoBehaviour
 
 
             OnPrimaryClick() <- Bu Oyuncu LMB tuşuna bastığında çalışır.
+                -Oyuncu Inspect tuşuna basıyor mu?
+                    Evet:
+                        Oyuncu bir Rigidbody'e bakıyor mu?
+                            Evet:
+                                Tut ve Mouse kordinatlarına sürükle
                 -Oyuncunun ana elinde item var mı?
                     Evet:
                         Oyuncunun elindeki itemi kullan
@@ -192,10 +243,7 @@ public class PlayerHands : MonoBehaviour
                 - Oyuncunun elinde item var mı?
                     Evet:
                         Elindeki itemi bırak.
-
-
-
-
+            OnInspectClick() -> Bu oyuncu R tuşuna bastığında çalışır.
 
         Eşya: Kullanılabilir öğe (Useable.cs)
     */
