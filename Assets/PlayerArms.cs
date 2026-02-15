@@ -18,22 +18,18 @@ public class PlayerArms : MonoBehaviour
     {
         float Vel = CC.velocity.magnitude;
         Transform MainArm = PHands.Lefty ? LeftArm : RightArm;
-
+        Vector3 Direction = -transform.up;
         if (PHands.IsHandFull)
         {
-            MainArm.forward = Head.forward;
+            Direction = Head.forward;
         }
-        else
+        else if (Vel > 1)
         {
-            if (Vel > 1)
-            {
-                MainArm.forward = -CC.velocity.normalized;
-            }
-            else
-            {
-                MainArm.forward = -transform.up;
-            }
+            Direction = -CC.velocity.normalized;
         }
+
+        Vector3 Lerp = Vector3.Lerp(MainArm.forward,Direction,0.1f);
+        MainArm.forward = Lerp;
     }
 
     /*
