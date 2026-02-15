@@ -113,6 +113,8 @@ public class PlayerHands : MonoBehaviour
                 RigidbodyInOtherHand.velocity = Vector3.zero;
                 }
             }
+
+            if (Hit.collider.transform.TryGetComponent(out Useable U)) U.Use_();
         }
         else
         {
@@ -140,12 +142,12 @@ public class PlayerHands : MonoBehaviour
 
         if (!IsSomethingInFrontOfMe) return;
 
-        if (Hit.collider.transform.TryGetComponent(out Item I))
+        if (Hit.transform.TryGetComponent(out Item I))
             if (IsHandFull) 
                 SwitchHandItem(I);
             else
                 PickupItem(I);
-        else if (Hit.collider.transform.TryGetComponent(out Useable U))
+        else if (Hit.transform.TryGetComponent(out Useable U))
             U.Use_();
     }
 

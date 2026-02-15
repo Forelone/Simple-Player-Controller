@@ -90,8 +90,8 @@ public class PhysicalSlider : MonoBehaviour
             while (Input.GetAxisRaw("Interact") == 1)
             {
                 float MouseCurrentX = Input.mousePosition.x;
-                Value = Mathf.InverseLerp(NegativeX,PositiveX,MouseCurrentX);
-                OnSliderChange.Invoke();
+                SliderValue = Mathf.InverseLerp(NegativeX,PositiveX,MouseCurrentX);
+                //OnSliderChange.Invoke();
                 yield return new WaitForFixedUpdate();
             }
             AlreadyHolding = false;
