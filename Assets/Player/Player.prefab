@@ -65,6 +65,7 @@ GameObject:
   - component: {fileID: 4993934468966281916}
   - component: {fileID: 5240195836456563257}
   - component: {fileID: 6041274262474371733}
+  - component: {fileID: 5392951358075226136}
   - component: {fileID: 7468378646215101210}
   - component: {fileID: 2093589285643312138}
   m_Layer: 3
@@ -110,6 +111,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 51
   DebugMode: 0
+  RigidbodyInOtherHand: {fileID: 0}
 --- !u!114 &7887733244745508973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,6 +194,31 @@ MonoBehaviour:
   LeftArm: {fileID: 2624912070566975945}
   RightArm: {fileID: 6501773911023520281}
   Head: {fileID: 7699720771294364281}
+--- !u!114 &5392951358075226136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153405953771420644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee1ba1fcc42d3c0c89fe7f6dfbfdd597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Inventory:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  RightArmAnim: {fileID: 0}
+  PHands: {fileID: 0}
 --- !u!54 &7468378646215101210
 Rigidbody:
   m_ObjectHideFlags: 0

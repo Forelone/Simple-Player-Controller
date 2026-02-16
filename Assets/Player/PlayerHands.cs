@@ -70,6 +70,7 @@ public class PlayerHands : MonoBehaviour
     }
 
     Item ItemInMainHand;
+    public Item ItemOnHand {get { return ItemInMainHand; }}
     [SerializeField] Rigidbody RigidbodyInOtherHand;
     float RGDist = 0;
     public bool IsHandFull { get { return ItemInMainHand != null; } }
@@ -154,6 +155,12 @@ public class PlayerHands : MonoBehaviour
     void DropHandle()
     {
         if (DebugMode) print("Drop Call");
+
+        DropHandItem();
+    }
+
+    public void DropHandItem()
+    {
         if (!IsHandFull) return;
 
         Item OldItem = ItemInMainHand;
@@ -182,7 +189,7 @@ public class PlayerHands : MonoBehaviour
         PickupItem(NewItem);
     }
 
-    void PickupItem(Item ItemToPickup)
+    public void PickupItem(Item ItemToPickup)
     {
         if (IsHandFull) return;
 

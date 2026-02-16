@@ -900,6 +900,26 @@ PrefabInstance:
       propertyPath: Debug
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1823710878965374422, guid: fd5de819cb9a12f70b29db62eee3e1da, type: 3}
+      propertyPath: DelayAfterUse
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1823710878965374422, guid: fd5de819cb9a12f70b29db62eee3e1da, type: 3}
+      propertyPath: RequiredUseDelay
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1823710878965374422, guid: fd5de819cb9a12f70b29db62eee3e1da, type: 3}
+      propertyPath: AlternativeDelayAfterUse
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1823710878965374422, guid: fd5de819cb9a12f70b29db62eee3e1da, type: 3}
+      propertyPath: RequiredAlternativeUseDelay
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1823710878965374422, guid: fd5de819cb9a12f70b29db62eee3e1da, type: 3}
+      propertyPath: AlternateUse.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5128833936911146127, guid: fd5de819cb9a12f70b29db62eee3e1da, type: 3}
       propertyPath: m_Name
       value: TestDoor
