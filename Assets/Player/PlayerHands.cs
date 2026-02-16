@@ -114,7 +114,7 @@ public class PlayerHands : MonoBehaviour
                 }
             }
 
-            if (Hit.collider.transform.TryGetComponent(out Useable U)) U.Use_();
+            if (Hit.collider != null && Hit.collider.transform.TryGetComponent(out Useable U)) U.Use_();
         }
         else
         {
